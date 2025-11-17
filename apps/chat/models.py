@@ -9,7 +9,7 @@ User = get_user_model()
 
 class Group(models.Model):
     uuid = models.UUIDField(default=uuid4, editable=False)
-    name = (models.CharField(max_length=30),)
+    name = models.CharField(max_length=30)
     members = models.ManyToManyField(User)
 
     def __str__(self):
@@ -33,7 +33,7 @@ class Message(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="messages")
 
     def __str__(self):
         date = self.timestamp.date()
@@ -51,7 +51,7 @@ class Event(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="events")
 
     def save(self, *args, **kwargs):
         self.description = f"{self.user} {self.type} the {self.group.name} group"
