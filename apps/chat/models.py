@@ -20,12 +20,12 @@ class Group(models.Model):
 
     def add_user_to_group(self, user):
         self.members.add(user)
-        self.event_set.create(type="Join", user=user)
+        self.events.create(type="Join", user=user)
         self.save()
 
     def remove_user_from_group(self, user):
         self.members.remove(user)
-        self.event_set.create(type="Left", user=user)
+        self.events.create(type="Left", user=user)
         self.save()
 
 
